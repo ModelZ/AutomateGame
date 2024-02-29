@@ -7,12 +7,21 @@ using System.Text;
 using System.Threading.Tasks;
 using WindowsInput.Native;
 using WindowsInput;
-using System.ComponentModel.Design;
 
 namespace AutomateGame
 {
-    class Autoholdkey
+    internal class AutoTemplate
     {
+
+
+
+        // **************************************************************************************************************************
+        // Copy Area Down
+
+
+
+
+
         // import the function in your class
         [DllImport("user32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
@@ -42,11 +51,6 @@ namespace AutomateGame
 
                 if (isim.InputDeviceState.IsHardwareKeyDown(EXITKEY))
                 {
-                    // Release key when Thread terminate this program
-                    Console.WriteLine("Release Key");
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
-
                     Console.WriteLine("Exit Program Successfully!");
                     System.Environment.Exit(0);
                 }
@@ -61,19 +65,9 @@ namespace AutomateGame
         {
             // Get the array of process run by this name
             Process[] ps = Process.GetProcessesByName("granblue_fantasy_relink");
-            /* // Print the number of array of processes
-             Console.WriteLine(ps.Length);*/
-
-            /*            // Loop out to check array of processes contents 
-                        foreach (Process p in ps)
-                        {
-                            Console.WriteLine(p);
-                        }*/
 
             // Get the first array of process
             Process GameProcess = ps.FirstOrDefault();
-            /*            //Print out GameProcess
-                        Console.WriteLine(GameProcess);*/
 
             if (GameProcess == null)
             {
@@ -91,7 +85,7 @@ namespace AutomateGame
             // Call InputSimulator Object
             InputSimulator isim = new InputSimulator();
 
-            // Left Click to hide mouse focus into the game
+            // Left Click to hide mouse focus into the game (For FullScreen Game)
             Thread.Sleep(50);
             isim.Mouse.LeftButtonDown();
             Thread.Sleep(50);
@@ -101,45 +95,38 @@ namespace AutomateGame
             Thread.Sleep(1000);
 
 
-
             // Thread function for Listening Keyboard Input
             bool active = false;
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
-            bool isKeyDown = false;
 
             while (true)
             {
-                // If toggle key is on and not keydown
-                if (active && !isKeyDown)
+                // If toggle key is on
+                if (active)
                 {
-                    // Hold W Key and E Key every 2 seconds
+                   // Do Something
 
-                    Console.WriteLine("Holding Key");
-                    isKeyDown = true; 
-                    isim.Keyboard.KeyDown(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyDown(VirtualKeyCode.VK_E);
+
+
                 }
-
-                // If toggle key is on and keydown
-                if (!active && isKeyDown)
-                {
-
-                    Console.WriteLine("Release Key");
-                    isKeyDown = false;
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
-
-                    // ***ALWAYS*** Release key when Thread terminate this program
-                }
-
             }
-
-                
-          
-
-
         }
+
+
+
+
+
+
+
+
+
+        // Copy Area Up
+        // **************************************************************************************************************************
+
+
+
+
     }
 }

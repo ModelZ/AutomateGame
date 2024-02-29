@@ -7,11 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using WindowsInput.Native;
 using WindowsInput;
-using System.ComponentModel.Design;
 
 namespace AutomateGame
 {
-    class Autoholdkey
+    class Autoclick
     {
         // import the function in your class
         [DllImport("user32.dll")]
@@ -42,11 +41,6 @@ namespace AutomateGame
 
                 if (isim.InputDeviceState.IsHardwareKeyDown(EXITKEY))
                 {
-                    // Release key when Thread terminate this program
-                    Console.WriteLine("Release Key");
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
-
                     Console.WriteLine("Exit Program Successfully!");
                     System.Environment.Exit(0);
                 }
@@ -57,23 +51,13 @@ namespace AutomateGame
 
         }
 
-        static void Mains(string[] args)
+        static void Main(string[] args)
         {
             // Get the array of process run by this name
             Process[] ps = Process.GetProcessesByName("granblue_fantasy_relink");
-            /* // Print the number of array of processes
-             Console.WriteLine(ps.Length);*/
-
-            /*            // Loop out to check array of processes contents 
-                        foreach (Process p in ps)
-                        {
-                            Console.WriteLine(p);
-                        }*/
 
             // Get the first array of process
             Process GameProcess = ps.FirstOrDefault();
-            /*            //Print out GameProcess
-                        Console.WriteLine(GameProcess);*/
 
             if (GameProcess == null)
             {
@@ -91,7 +75,7 @@ namespace AutomateGame
             // Call InputSimulator Object
             InputSimulator isim = new InputSimulator();
 
-            // Left Click to hide mouse focus into the game
+            // Left Click to hide mouse focus into the game (For FullScreen Game)
             Thread.Sleep(50);
             isim.Mouse.LeftButtonDown();
             Thread.Sleep(50);
@@ -101,45 +85,36 @@ namespace AutomateGame
             Thread.Sleep(1000);
 
 
-
             // Thread function for Listening Keyboard Input
             bool active = false;
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
-            bool isKeyDown = false;
 
             while (true)
             {
-                // If toggle key is on and not keydown
-                if (active && !isKeyDown)
+                // If toggle key is on
+                if (active)
                 {
-                    // Hold W Key and E Key every 2 seconds
+                    // Clicking Routine
+                    // every 2 seconds, right click and left click
+                    Thread.Sleep(2000);
+                    Console.WriteLine("Sending left click");
 
-                    Console.WriteLine("Holding Key");
-                    isKeyDown = true; 
-                    isim.Keyboard.KeyDown(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyDown(VirtualKeyCode.VK_E);
+                    isim.Mouse.LeftButtonDown();
+                    Thread.Sleep(50);
+                    isim.Mouse.LeftButtonUp();
+
+
+                    Thread.Sleep(2000);
+                    Console.WriteLine("Sending right click");
+
+                    isim.Mouse.RightButtonDown();
+                    Thread.Sleep(50);
+                    isim.Mouse.RightButtonUp();
                 }
-
-                // If toggle key is on and keydown
-                if (!active && isKeyDown)
-                {
-
-                    Console.WriteLine("Release Key");
-                    isKeyDown = false;
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
-
-                    // ***ALWAYS*** Release key when Thread terminate this program
-                }
-
             }
-
-                
-          
-
-
         }
+
     }
 }
