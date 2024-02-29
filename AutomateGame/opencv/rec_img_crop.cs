@@ -12,7 +12,7 @@ namespace AutomateGame.opencv
         static void Mains()
         {
             // Load the image
-            Mat image = CvInvoke.Imread("C:\\Users\\User\\Desktop\\GB_Build\\granblue_ws\\AutomateGame\\AutomateGame\\opencv\\no_repeat.png");
+            Mat image = CvInvoke.Imread("../../../opencv/no_repeat.png");
 
             // Define the upper-left and lower-right points of the rectangle
             Point upperLeft = new Point(195, 964); // Example coordinates of upper-left point

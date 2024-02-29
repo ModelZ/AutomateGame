@@ -9,10 +9,10 @@ namespace AutomateGame.opencv
 {
     internal class TextRecognition
     {
-        static void Main()
+        static void Mains()
         {
             // Load an image
-            Mat image = CvInvoke.Imread("C:\\Users\\User\\Desktop\\GB_Build\\granblue_ws\\AutomateGame\\AutomateGame\\opencv\\crop_re_quest.png", ImreadModes.Color);
+            Mat image = CvInvoke.Imread("../../../opencv/crop_re_quest.png", ImreadModes.Color);
 
             // Convert the image to grayscale
             Mat gray = new Mat();
