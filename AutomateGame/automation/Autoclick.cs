@@ -5,23 +5,17 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsInput;
 using WindowsInput.Native;
+using WindowsInput;
 
-namespace AutomateGame
+namespace AutomateGame.automation
 {
-    class Autojump
+    class Autoclick
     {
-
-
-
-
-
-
         // import the function in your class
         [DllImport("user32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
-    
+
 
         static void keyListener(InputSimulator isim, ref bool active, VirtualKeyCode TOGGLEKEY, VirtualKeyCode EXITKEY)
         {
@@ -48,7 +42,7 @@ namespace AutomateGame
                 if (isim.InputDeviceState.IsHardwareKeyDown(EXITKEY))
                 {
                     Console.WriteLine("Exit Program Successfully!");
-                    System.Environment.Exit(0);
+                    Environment.Exit(0);
                 }
 
                 // Add some delay to avoid high CPU usage
@@ -61,24 +55,14 @@ namespace AutomateGame
         {
             // Get the array of process run by this name
             Process[] ps = Process.GetProcessesByName("granblue_fantasy_relink");
-           /* // Print the number of array of processes
-            Console.WriteLine(ps.Length);*/
-
-/*            // Loop out to check array of processes contents 
-            foreach (Process p in ps)
-            {
-                Console.WriteLine(p);
-            }*/
 
             // Get the first array of process
             Process GameProcess = ps.FirstOrDefault();
-/*            //Print out GameProcess
-            Console.WriteLine(GameProcess);*/
 
             if (GameProcess == null)
             {
                 Console.WriteLine("Error: No Process Found");
-                System.Environment.Exit(-1);
+                Environment.Exit(-1);
             }
 
 
@@ -91,7 +75,7 @@ namespace AutomateGame
             // Call InputSimulator Object
             InputSimulator isim = new InputSimulator();
 
-            // Left Click to hide mouse focus into the game
+            // Left Click to hide mouse focus into the game (For FullScreen Game)
             Thread.Sleep(50);
             isim.Mouse.LeftButtonDown();
             Thread.Sleep(50);
@@ -100,7 +84,6 @@ namespace AutomateGame
             // Thread Delay for 1 second
             Thread.Sleep(1000);
 
-            
 
             // Thread function for Listening Keyboard Input
             bool active = false;
@@ -111,27 +94,27 @@ namespace AutomateGame
             while (true)
             {
                 // If toggle key is on
-                if(active)
+                if (active)
                 {
-                    // Jumping Routine
-                    // Press SPACE Key every 2 seconds
+                    // Clicking Routine
+                    // every 2 seconds, right click and left click
                     Thread.Sleep(2000);
-                    Console.WriteLine("Sending jump");
+                    Console.WriteLine("Sending left click");
 
-                    isim.Keyboard.KeyDown(VirtualKeyCode.SPACE);
+                    isim.Mouse.LeftButtonDown();
                     Thread.Sleep(50);
-                    isim.Keyboard.KeyUp(VirtualKeyCode.SPACE);
+                    isim.Mouse.LeftButtonUp();
+
+
+                    Thread.Sleep(2000);
+                    Console.WriteLine("Sending right click");
+
+                    isim.Mouse.RightButtonDown();
+                    Thread.Sleep(50);
+                    isim.Mouse.RightButtonUp();
                 }
             }
         }
-
-
-
-
-
-
-
-
 
     }
 }

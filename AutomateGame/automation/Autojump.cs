@@ -5,14 +5,19 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsInput.Native;
 using WindowsInput;
-using System.ComponentModel.Design;
+using WindowsInput.Native;
 
-namespace AutomateGame
+namespace AutomateGame.automation
 {
-    class Autoholdkey
+    class Autojump
     {
+
+
+
+
+
+
         // import the function in your class
         [DllImport("user32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
@@ -42,13 +47,8 @@ namespace AutomateGame
 
                 if (isim.InputDeviceState.IsHardwareKeyDown(EXITKEY))
                 {
-                    // Release key when Thread terminate this program
-                    Console.WriteLine("Release Key");
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
-
                     Console.WriteLine("Exit Program Successfully!");
-                    System.Environment.Exit(0);
+                    Environment.Exit(0);
                 }
 
                 // Add some delay to avoid high CPU usage
@@ -78,7 +78,7 @@ namespace AutomateGame
             if (GameProcess == null)
             {
                 Console.WriteLine("Error: No Process Found");
-                System.Environment.Exit(-1);
+                Environment.Exit(-1);
             }
 
 
@@ -107,39 +107,31 @@ namespace AutomateGame
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
-            bool isKeyDown = false;
 
             while (true)
             {
-                // If toggle key is on and not keydown
-                if (active && !isKeyDown)
+                // If toggle key is on
+                if (active)
                 {
-                    // Hold W Key and E Key every 2 seconds
+                    // Jumping Routine
+                    // Press SPACE Key every 2 seconds
+                    Thread.Sleep(2000);
+                    Console.WriteLine("Sending jump");
 
-                    Console.WriteLine("Holding Key");
-                    isKeyDown = true; 
-                    isim.Keyboard.KeyDown(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyDown(VirtualKeyCode.VK_E);
+                    isim.Keyboard.KeyDown(VirtualKeyCode.SPACE);
+                    Thread.Sleep(50);
+                    isim.Keyboard.KeyUp(VirtualKeyCode.SPACE);
                 }
-
-                // If toggle key is on and keydown
-                if (!active && isKeyDown)
-                {
-
-                    Console.WriteLine("Release Key");
-                    isKeyDown = false;
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
-                    isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
-
-                    // ***ALWAYS*** Release key when Thread terminate this program
-                }
-
             }
-
-                
-          
-
-
         }
+
+
+
+
+
+
+
+
+
     }
 }

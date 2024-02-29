@@ -9,10 +9,16 @@ namespace AutomateGame.opencv
 {
     internal class TextRecognition
     {
-        static void Mains()
+        static void Main()
         {
+            // TesserectPath maybe argument in cli
+            string TesserectPath = "C:\\Program Files\\Tesseract-OCR\\tessdata";
+
+            // Text Image Path
+            string imagePath = "../../../opencv/crop_quest.png";
+
             // Load an image
-            Mat image = CvInvoke.Imread("../../../opencv/crop_re_quest.png", ImreadModes.Color);
+            Mat image = CvInvoke.Imread(imagePath, ImreadModes.Color);
 
             // Convert the image to grayscale
             Mat gray = new Mat();
@@ -21,7 +27,7 @@ namespace AutomateGame.opencv
             // Apply some preprocessing if needed (e.g., thresholding, smoothing)
 
             // Create Tesseract OCR engine
-            Tesseract ocr = new Tesseract("C:\\Program Files\\Tesseract-OCR\\tessdata", "eng", OcrEngineMode.LstmOnly);
+            Tesseract ocr = new Tesseract(TesserectPath, "eng", OcrEngineMode.LstmOnly);
 
             // Set the image to OCR engine
             ocr.SetImage(gray);

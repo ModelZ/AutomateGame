@@ -11,7 +11,7 @@ namespace AutomateGame.opencv
 {
     internal class ScreenCapture
     {
-        static void Main()
+        static void Mains()
         {
             try
             {

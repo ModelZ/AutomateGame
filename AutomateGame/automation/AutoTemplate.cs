@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WindowsInput.Native;
 using WindowsInput;
 
-namespace AutomateGame
+namespace AutomateGame.automation
 {
     internal class AutoTemplate
     {
@@ -52,7 +52,7 @@ namespace AutomateGame
                 if (isim.InputDeviceState.IsHardwareKeyDown(EXITKEY))
                 {
                     Console.WriteLine("Exit Program Successfully!");
-                    System.Environment.Exit(0);
+                    Environment.Exit(0);
                 }
 
                 // Add some delay to avoid high CPU usage
@@ -72,7 +72,7 @@ namespace AutomateGame
             if (GameProcess == null)
             {
                 Console.WriteLine("Error: No Process Found");
-                System.Environment.Exit(-1);
+                Environment.Exit(-1);
             }
 
 
@@ -106,7 +106,7 @@ namespace AutomateGame
                 // If toggle key is on
                 if (active)
                 {
-                   // Do Something
+                    // Do Something
 
 
 

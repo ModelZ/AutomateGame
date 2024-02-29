@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using WindowsInput;
 
-namespace AutomateGame
+namespace AutomateGame.automation
 {
     class Minecraft
     {
@@ -58,7 +58,7 @@ namespace AutomateGame
                     {
                         active = !active;
                         isXKeyUp = false;
-                        Console.WriteLine("Toggle: " +  active);
+                        Console.WriteLine("Toggle: " + active);
                     }
 
                 }
@@ -66,15 +66,15 @@ namespace AutomateGame
                 {
                     isXKeyUp = true;
                 }
-                
+
                 if (isim.InputDeviceState.IsHardwareKeyDown(WindowsInput.Native.VirtualKeyCode.VK_Z))
                 {
                     Console.WriteLine("Exit Program Successfully!");
-                    System.Environment.Exit(0);
+                    Environment.Exit(0);
                 }
 
                 // Add some delay to avoid high CPU usage
-                Thread.Sleep(100);                
+                Thread.Sleep(100);
             }
 
         }
@@ -104,13 +104,13 @@ namespace AutomateGame
 
                 // bring minecraft app to focus
                 IntPtr h = minecraftProcess.MainWindowHandle;
-                SetForegroundWindow(h); 
+                SetForegroundWindow(h);
 
                 // Thread Delay for 1 second
                 Thread.Sleep(1000);
 
                 Console.WriteLine("Getting Minecraft out of Game Menu");
-                  
+
 
                 // Getting Minecraft out of Game Menu by press ESC Key
                 InputSimulator isim = new InputSimulator();
@@ -120,9 +120,9 @@ namespace AutomateGame
                 bool active = false;
                 Thread listener = new Thread(() => keyListener(isim, ref active));
                 listener.Start();
-                
+
                 Console.WriteLine("Start jumping Routine");
-                while(true)
+                while (true)
                 {
 
 
@@ -133,8 +133,8 @@ namespace AutomateGame
                     if (active) placeTorch(isim);
 
                     // Auto Break Torch
-                    if (active) breakTorch(isim); 
-                   
+                    if (active) breakTorch(isim);
+
 
 
                 }
