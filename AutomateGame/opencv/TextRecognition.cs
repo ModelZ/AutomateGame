@@ -15,7 +15,7 @@ namespace AutomateGame.opencv
             string TesserectPath = "C:\\Program Files\\Tesseract-OCR\\tessdata";
 
             // Text Image Path
-            string imagePath = "../../../opencv/crop_quest.png";
+            string imagePath = "../../../opencv/post_battle_status.png";
 
             // Load an image
             Mat image = CvInvoke.Imread(imagePath, ImreadModes.Color);

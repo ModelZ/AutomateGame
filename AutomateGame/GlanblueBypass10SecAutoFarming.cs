@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using WindowsInput.Native;
 using WindowsInput;
 using AutomateGame.opencv;
+using Emgu.CV;
+using AutomateGame.automation;
+using Point = System.Drawing.Point;
 
 namespace AutomateGame
 {
@@ -21,7 +24,7 @@ namespace AutomateGame
 
         static void keyListener(InputSimulator isim, ref bool active, VirtualKeyCode TOGGLEKEY, VirtualKeyCode EXITKEY)
         {
-            Console.WriteLine("Thread Active....");
+            Console.WriteLine("keyListener Thread Active....");
             bool isKeyUp = true;
             while (true)
             {
@@ -85,8 +88,32 @@ namespace AutomateGame
             }
         }
 
-        static void Mains(string[] args)
+        static void battleResultleftClicker(InputSimulator isim, ref bool active)
         {
+            Console.WriteLine("battleResultleftClicker Thread Active....");
+
+            while (true)
+            {
+                if (active)
+                {
+                    // Left click every 2 second
+                    Thread.Sleep(2000);
+
+                    Console.WriteLine("battleResultleftClicker Clicked");
+                    isim.Mouse.LeftButtonDown();
+                    Thread.Sleep(50);
+                    isim.Mouse.LeftButtonUp();
+                }
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to Granblue Fantasy Relink Bypass 10 times Reset Repeat Quest");
+            Console.WriteLine("Press X to toggle on/off, Press Z to terminate the program");
+            Console.WriteLine("How to use: go to some quest and idle and press X");
+            Console.WriteLine("Author: ModelZ");
+            Console.WriteLine("*****************************************************************");
             // Get the array of process run by this name
             Process[] ps = Process.GetProcessesByName("granblue_fantasy_relink");
 
@@ -122,12 +149,23 @@ namespace AutomateGame
             // Toggle Automate
             bool active = false;
 
+            // Toggle battle result clicker thread 
+            bool battle_res_active = false;
+
             // Thread function for Listening Keyboard Input
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
+            // Thread function for battle result clicker
+            Thread battleResultClickerThread = new Thread(() => battleResultleftClicker(isim, ref battle_res_active));
+            battleResultClickerThread.Start();
+
             // For blocking KeyHolding Loop
             bool isKeyDown = false;
+
+            // check string
+            string cancelRepeat = "Cancel";
+            string repeatQuest = "Quest";
 
             while (true)
             {
@@ -138,9 +176,44 @@ namespace AutomateGame
                 // If toggle key is on
                 if (active)
                 {
-                    // Do Something
 
-                    
+                    // Capture Screen to Mat every 5 seconds
+
+                    Thread.Sleep(5000);
+                    // Playsound when capturing
+                    Playsound.Mains();
+                    // Disable clicker to avoid repeatqueststate 
+                    battle_res_active = false;
+                    // Capture Screen to Mat
+                    string capturedText = CapturedScreenToTextRecognition.capturedToText(new Point(188, 946), new Point(347, 1005));
+
+                    //Console.WriteLine("Text: " + Text);
+
+                    if (capturedText.Contains(repeatQuest)) // Show RepeatQuest Button State
+                    {
+                        Console.WriteLine("ShowRepeatQuestState");
+
+                        // change to cancel state to bypass 10 times manual
+                        isim.Keyboard.KeyDown(VirtualKeyCode.VK_3);
+                        Thread.Sleep(50);
+                        isim.Keyboard.KeyUp(VirtualKeyCode.VK_3);
+                        Thread.Sleep(100);
+                        isim.Mouse.LeftButtonDown();
+                        Thread.Sleep(50);
+                        isim.Mouse.LeftButtonUp();
+
+                    }
+                    else if(capturedText.Contains(cancelRepeat)) // Show CancelRepeat Button State
+                    {
+                        Console.WriteLine("ShowCancelRepeatState");
+                        battle_res_active = true;
+                    }
+                    else  // No Button State
+                    {
+                        Console.WriteLine("No State");
+                    }
+
+
 
 
                 }
