@@ -42,9 +42,11 @@ namespace AutomateGame
 
                 if (isim.InputDeviceState.IsHardwareKeyDown(EXITKEY))
                 {
+                    // Release key when Thread terminate this program
                     Console.WriteLine("Release Key");
                     isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
                     isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
+
                     Console.WriteLine("Exit Program Successfully!");
                     System.Environment.Exit(0);
                 }
@@ -129,7 +131,7 @@ namespace AutomateGame
                     isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
                     isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
 
-                    // Release key when Thread terminate this program
+                    // ***ALWAYS*** Release key when Thread terminate this program
                 }
 
             }
