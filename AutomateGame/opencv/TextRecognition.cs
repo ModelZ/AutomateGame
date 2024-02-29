@@ -9,7 +9,7 @@ namespace AutomateGame.opencv
 {
     internal class TextRecognition
     {
-        static void Main()
+        static void Mains()
         {
             // TesserectPath maybe argument in cli
             string TesserectPath = "C:\\Program Files\\Tesseract-OCR\\tessdata";

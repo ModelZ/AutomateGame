@@ -31,6 +31,8 @@ namespace AutomateGame.opencv
                 // Copying Image from The Screen
                 captureGraphics.CopyFromScreen(captureRectangle.Left, captureRectangle.Top, 0, 0, captureRectangle.Size);
 
+                
+
                 // Saving the Image File 
                 captureBitmap.Save("../../../opencv/captured.jpg", ImageFormat.Jpeg);
 
@@ -42,11 +44,15 @@ namespace AutomateGame.opencv
 
                 // Displaying the Successfull Result
                 //MessageBox.Show("Screen Captured");
+                
+                captureBitmap.Dispose();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
+            
         }
     }
 }
