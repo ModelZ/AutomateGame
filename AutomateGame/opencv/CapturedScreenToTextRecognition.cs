@@ -14,9 +14,9 @@ using Emgu.CV.OCR;
 
 namespace AutomateGame.opencv
 {
-    class CapturedScreenToTextRecognition
+    internal class CapturedScreenToTextRecognition
     {
-        static Mat screenCapturedToMat()
+        public static Mat screenCapturedToMat()
         {
             // Creating a new Bitmap object
             // Bitmap captureBitmap = new Bitmap(int width, int height, PixelFormat);
@@ -40,7 +40,7 @@ namespace AutomateGame.opencv
             return captureMat;
         }
 
-        static Mat twoPointRectangleCrop(Mat imageToCrop, Point UpperLeftPoint, Point LowerRightPoint)
+        public static Mat twoPointRectangleCrop(Mat imageToCrop, Point UpperLeftPoint, Point LowerRightPoint)
         {
             // Define the upper-left and lower-right points of the rectangle
             // You can find 2 set of point from img_coord_finder.py
@@ -61,7 +61,7 @@ namespace AutomateGame.opencv
             return croppedImage;
         }
 
-        static string imageTextRecognition(Mat inputImage, string TesserectPath)
+        public static string imageTextRecognition(Mat inputImage, string TesserectPath)
         {
             // TesserectPath maybe argument in cli
             // Tesserect is Optical Text Recognition Open Source From Google
@@ -94,7 +94,7 @@ namespace AutomateGame.opencv
             return recognizedText;
         }
 
-        static string imageTextRecognition(Mat inputImage)
+        public static string imageTextRecognition(Mat inputImage)
         {
             // TesserectPath maybe argument in cli
             // Tesserect is Optical Text Recognition Open Source From Google
@@ -127,7 +127,7 @@ namespace AutomateGame.opencv
             return recognizedText;
         }
 
-        static string capturedToText(Point UpperLeftPoint, Point LowerRightPoint)
+        public static string capturedToText(Point UpperLeftPoint, Point LowerRightPoint)
         {
             // ************* Capture Process ****************//
 
@@ -201,7 +201,7 @@ namespace AutomateGame.opencv
             return recognizedText;
         }
 
-        static string capturedToText(Point UpperLeftPoint, Point LowerRightPoint, string TesserectPath)
+        public static string capturedToText(Point UpperLeftPoint, Point LowerRightPoint, string TesserectPath)
         {
             // ************* Capture Process ****************//
 
