@@ -51,7 +51,7 @@ namespace AutomateGame
 
         }
 
-        static void Main(string[] args)
+        static void Mains(string[] args)
         {
             // Get the array of process run by this name
             Process[] ps = Process.GetProcessesByName("granblue_fantasy_relink");
