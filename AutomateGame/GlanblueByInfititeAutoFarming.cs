@@ -107,7 +107,7 @@ namespace AutomateGame
             }
         }*/
 
-        static void Main(string[] args)
+        static void Mains(string[] args)
         {
             Console.WriteLine("Welcome to Granblue Fantasy Relink Bypass 10 times Reset Repeat Quest");
             Console.WriteLine("Press X to toggle on/off, Press Z to terminate the program");
