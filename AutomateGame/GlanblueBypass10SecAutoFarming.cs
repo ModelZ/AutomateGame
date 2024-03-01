@@ -88,7 +88,7 @@ namespace AutomateGame
             }
         }
 
-        static void battleResultleftClicker(InputSimulator isim, ref bool active)
+        /*static void battleResultleftClicker(InputSimulator isim, ref bool active)
         {
             Console.WriteLine("battleResultleftClicker Thread Active....");
 
@@ -105,7 +105,7 @@ namespace AutomateGame
                     isim.Mouse.LeftButtonUp();
                 }
             }
-        }
+        }*/
 
         static void Main(string[] args)
         {
@@ -150,15 +150,15 @@ namespace AutomateGame
             bool active = false;
 
             // Toggle battle result clicker thread 
-            bool battle_res_active = false;
+            //bool battle_res_active = false;
 
             // Thread function for Listening Keyboard Input
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
-            // Thread function for battle result clicker
+        /*    // Thread function for battle result clicker
             Thread battleResultClickerThread = new Thread(() => battleResultleftClicker(isim, ref battle_res_active));
-            battleResultClickerThread.Start();
+            battleResultClickerThread.Start();*/
 
             // For blocking KeyHolding Loop
             bool isKeyDown = false;
@@ -166,6 +166,7 @@ namespace AutomateGame
             // check string
             string cancelRepeat = "Cancel";
             string repeatQuest = "Quest";
+            string bypassContinueQuest = "Continue";
 
             while (true)
             {
@@ -179,21 +180,38 @@ namespace AutomateGame
 
                     // Capture Screen to Mat every 5 seconds
 
-                    Thread.Sleep(5000);
+                    Thread.Sleep(4000);
+
+                    // Disable clicker to avoid repeatqueststate 
+                    //battle_res_active = false;
+
                     // Playsound when capturing
                     Playsound.Mains();
-                    // Disable clicker to avoid repeatqueststate 
-                    battle_res_active = false;
-                    // Capture Screen to Mat
-                    string capturedText = CapturedScreenToTextRecognition.capturedToText(new Point(188, 946), new Point(347, 1005));
 
-                    //Console.WriteLine("Text: " + Text);
+                    // Capture Screen to Mat
+                    string capturedText = CapturedScreenToTextRecognition.capturedToText(new Point(188, 946), new Point(347, 1005)); // 1920 x 1080
+
+                    string bypasssText = CapturedScreenToTextRecognition.capturedToText(new Point(746, 442), new Point(1234, 583)); // 1920 x 1080
+
+                    // Bypasses (Do you want continus this quest?)
+                    if(bypasssText.Contains(bypassContinueQuest)) 
+                    {
+                        Console.WriteLine("Bypasses Continue Quest");
+
+                        isim.Keyboard.KeyDown(VirtualKeyCode.UP);
+                        Thread.Sleep(50);
+                        isim.Keyboard.KeyUp(VirtualKeyCode.UP);
+                        Thread.Sleep(500);
+                        isim.Mouse.LeftButtonDown();
+                        Thread.Sleep(50);
+                        isim.Mouse.LeftButtonUp();
+                    }else
 
                     if (capturedText.Contains(repeatQuest)) // Show RepeatQuest Button State
                     {
                         Console.WriteLine("ShowRepeatQuestState");
 
-                        // change to cancel state to bypass 10 times manual
+                        // auto repeat quest at first time
                         isim.Keyboard.KeyDown(VirtualKeyCode.VK_3);
                         Thread.Sleep(50);
                         isim.Keyboard.KeyUp(VirtualKeyCode.VK_3);
@@ -206,11 +224,20 @@ namespace AutomateGame
                     else if(capturedText.Contains(cancelRepeat)) // Show CancelRepeat Button State
                     {
                         Console.WriteLine("ShowCancelRepeatState");
-                        battle_res_active = true;
+                        isim.Mouse.LeftButtonDown();
+                        Thread.Sleep(50);
+                        isim.Mouse.LeftButtonUp();
+                        Thread.Sleep(500);
+                        isim.Mouse.LeftButtonDown();
+                        Thread.Sleep(50);
+                        isim.Mouse.LeftButtonUp();
+                        //battle_res_active = true;
                     }
                     else  // No Button State
                     {
+                        //battle_res_active = false;
                         Console.WriteLine("No State");
+
                     }
 
 

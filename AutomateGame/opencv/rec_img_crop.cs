@@ -12,11 +12,11 @@ namespace AutomateGame.opencv
         static void Mains()
         {
             // Load the image
-            Mat image = CvInvoke.Imread("../../../opencv/no_repeat.png");
+            Mat image = CvInvoke.Imread("../../../opencv/needtobypass.png");
 
             // Define the upper-left and lower-right points of the rectangle
-            Point upperLeft = new Point(188, 946); // Example coordinates of upper-left point
-            Point lowerRight = new Point(347, 1005); // Example coordinates of lower-right point
+            Point upperLeft = new Point(746, 442); // Example coordinates of upper-left point
+            Point lowerRight = new Point(1234, 583); // Example coordinates of lower-right point
 
             // Calculate the width and height of the rectangle
             int width = lowerRight.X - upperLeft.X;
