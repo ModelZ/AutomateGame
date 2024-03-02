@@ -11,6 +11,7 @@ using AutomateGame.opencv;
 using Emgu.CV;
 using AutomateGame.automation;
 using Point = System.Drawing.Point;
+using AutomateGame.automation.lib;
 
 namespace AutomateGame
 {
@@ -107,7 +108,7 @@ namespace AutomateGame
             }
         }*/
 
-        static void Mains(string[] args)
+        static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Granblue Fantasy Relink Bypass 10 times Reset Repeat Quest");
             Console.WriteLine("Press X to toggle on/off, Press Z to terminate the program");
@@ -149,19 +150,15 @@ namespace AutomateGame
             // Toggle Automate
             bool active = false;
 
-            // Toggle battle result clicker thread 
-            //bool battle_res_active = false;
-
             // Thread function for Listening Keyboard Input
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
-        /*    // Thread function for battle result clicker
-            Thread battleResultClickerThread = new Thread(() => battleResultleftClicker(isim, ref battle_res_active));
-            battleResultClickerThread.Start();*/
+            // Thread function for Run and Lockon
+            Thread runAndLockOnThread = new Thread(() => GlanblueAutoaction.runAndLockOn(isim, ref active));
+            runAndLockOnThread.Start();
 
-            // For blocking KeyHolding Loop
-            bool isKeyDown = false;
+
 
             // check string
             string cancelRepeat = "Cancel";
@@ -170,20 +167,14 @@ namespace AutomateGame
 
             while (true)
             {
-                // Hold W Key and E Key
-                runAndLockOn(isim, ref active, ref isKeyDown);
-
 
                 // If toggle key is on
                 if (active)
                 {
 
-                    // Capture Screen to Mat every 5 seconds
+                    // Capture Screen to Mat every 4 seconds
 
                     Thread.Sleep(4000);
-
-                    // Disable clicker to avoid repeatqueststate 
-                    //battle_res_active = false;
 
                     // Playsound when capturing
                     Playsound.Mains();
@@ -193,18 +184,13 @@ namespace AutomateGame
 
                     string bypasssText = CapturedScreenToTextRecognition.capturedToText(new Point(746, 442), new Point(1234, 583)); // 1920 x 1080
 
-                    // Bypasses (Do you want continus this quest?)
+                    // Bypasses (Do you want continue this quest?)
                     if(bypasssText.Contains(bypassContinueQuest)) 
                     {
                         Console.WriteLine("Bypasses Continue Quest");
 
-                        isim.Keyboard.KeyDown(VirtualKeyCode.UP);
-                        Thread.Sleep(50);
-                        isim.Keyboard.KeyUp(VirtualKeyCode.UP);
-                        Thread.Sleep(500);
-                        isim.Mouse.LeftButtonDown();
-                        Thread.Sleep(50);
-                        isim.Mouse.LeftButtonUp();
+                        Autokey.pressKey(active, isim, VirtualKeyCode.UP);
+                        Autoclick.leftClick(active, isim);
                     }else
 
                     if (capturedText.Contains(repeatQuest)) // Show RepeatQuest Button State
@@ -212,32 +198,20 @@ namespace AutomateGame
                         Console.WriteLine("ShowRepeatQuestState");
 
                         // auto repeat quest at first time
-                        isim.Keyboard.KeyDown(VirtualKeyCode.VK_3);
-                        Thread.Sleep(50);
-                        isim.Keyboard.KeyUp(VirtualKeyCode.VK_3);
-                        Thread.Sleep(100);
-                        isim.Mouse.LeftButtonDown();
-                        Thread.Sleep(50);
-                        isim.Mouse.LeftButtonUp();
+                        Autokey.pressKey(active, isim, VirtualKeyCode.VK_3);
+                        Autoclick.leftClick(active, isim); 
 
                     }
                     else if(capturedText.Contains(cancelRepeat)) // Show CancelRepeat Button State
                     {
                         Console.WriteLine("ShowCancelRepeatState");
-                        isim.Mouse.LeftButtonDown();
-                        Thread.Sleep(50);
-                        isim.Mouse.LeftButtonUp();
-                        Thread.Sleep(500);
-                        isim.Mouse.LeftButtonDown();
-                        Thread.Sleep(50);
-                        isim.Mouse.LeftButtonUp();
-                        //battle_res_active = true;
+                        Autoclick.leftClick(active, isim);
+                        Autoclick.leftClick(active, isim);
+
                     }
                     else  // No Button State
                     {
-                        //battle_res_active = false;
                         Console.WriteLine("No State");
-
                     }
 
 

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WindowsInput.Native;
 using WindowsInput;
+using AutomateGame.opencv;
+using Point = System.Drawing.Point;
 
 namespace AutomateGame.automation.lib
 {
@@ -12,8 +14,11 @@ namespace AutomateGame.automation.lib
     {
 
 
-        public static void runAndLockOn(InputSimulator isim, ref bool active, ref bool isKeyDown)
+        public static void runAndLockOn(InputSimulator isim, ref bool active)
         {
+            // For blocking KeyHolding Loop
+            bool isKeyDown = false;
+
             Console.WriteLine("runAndLockOn Thread Active....");
 
             while (true)
@@ -43,6 +48,57 @@ namespace AutomateGame.automation.lib
 
         }
 
+        public static void bypassContinueThisQuest(InputSimulator isim, ref bool active)
+        {
+            // Capture Screen to Mat every 4 seconds
+
+            Thread.Sleep(4000);
+
+            // Playsound when capturing
+            Playsound.Mains();
+
+            // check string
+            string cancelRepeat = "Cancel";
+            string repeatQuest = "Quest";
+            string bypassContinueQuest = "Continue";
+
+            // Capture Screen to Mat
+            string capturedText = CapturedScreenToTextRecognition.capturedToText(new Point(188, 946), new Point(347, 1005)); // 1920 x 1080
+
+            string bypasssText = CapturedScreenToTextRecognition.capturedToText(new Point(746, 442), new Point(1234, 583)); // 1920 x 1080
+
+            // Bypasses (Do you want continue this quest?)
+            if (bypasssText.Contains(bypassContinueQuest))
+            {
+                Console.WriteLine("Bypasses Continue Quest");
+
+                Autokey.pressKey(active, isim, VirtualKeyCode.UP);
+                Autoclick.leftClick(active, isim);
+            }
+            else
+
+            if (capturedText.Contains(repeatQuest)) // Show RepeatQuest Button State
+            {
+                Console.WriteLine("ShowRepeatQuestState");
+
+                // auto repeat quest at first time
+                Autokey.pressKey(active, isim, VirtualKeyCode.VK_3);
+                Autoclick.leftClick(active, isim);
+
+            }
+            else if (capturedText.Contains(cancelRepeat)) // Show CancelRepeat Button State
+            {
+                Console.WriteLine("ShowCancelRepeatState");
+                Autoclick.leftClick(active, isim);
+                Autoclick.leftClick(active, isim);
+
+            }
+            else  // No Button State
+            {
+                Console.WriteLine("No State");
+            }
+        }
+
 
         public static void ferryNormalAttack(InputSimulator isim, ref bool active)
         {
@@ -51,7 +107,7 @@ namespace AutomateGame.automation.lib
             while (true)
             {
                 // Perform Fery Left Click every 3 seconds 3 hits
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
 
                 Autoclick.leftClick(active, isim, 1000);
                 Autoclick.leftClick(active, isim, 1000);

@@ -53,7 +53,7 @@ namespace AutomateGame
 
         }
 
-        static void Main(string[] args)
+        static void Mains(string[] args)
         {
             // Get the array of process run by this name
             Process[] ps = Process.GetProcessesByName("granblue_fantasy_relink");
@@ -87,8 +87,6 @@ namespace AutomateGame
 
             // active for running thread
             bool active = false;
-            // For blocking KeyHolding Loop
-            bool isKeyDown = false;
 
             // Thread function for Listening Keyboard Input
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
@@ -96,7 +94,7 @@ namespace AutomateGame
 
 
             // Thread function for Run and Lockon
-            Thread runAndLockOnThread = new Thread(() => GlanblueAutoaction.runAndLockOn(isim, ref active, ref isKeyDown));
+            Thread runAndLockOnThread = new Thread(() => GlanblueAutoaction.runAndLockOn(isim, ref active));
             runAndLockOnThread.Start();
 
 
@@ -117,6 +115,8 @@ namespace AutomateGame
             ferrySkillSetThread.Join();
 
             /**********************************/
+
+
 
 
 
