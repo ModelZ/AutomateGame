@@ -15,7 +15,7 @@ using AutomateGame.automation.lib;
 
 namespace AutomateGame
 {
-    class GlanblueBypass10SecAutoFarming
+    class GlanblueAFKFarming
     {
 
         // import the function in your class
@@ -64,7 +64,7 @@ namespace AutomateGame
 
         static void runAndLockOn(InputSimulator isim, ref bool active, ref bool isKeyDown)
         {
-            
+
 
             // If toggle key is on and not keydown
             if (active && !isKeyDown)
@@ -126,7 +126,7 @@ namespace AutomateGame
                 Console.WriteLine("Error: GranblueFantasyRelink Process not Found");
                 Environment.Exit(-1);
             }
-            
+
 
             Console.WriteLine("Bringing Game on Focus....");
 
@@ -138,10 +138,7 @@ namespace AutomateGame
             InputSimulator isim = new InputSimulator();
 
             // Left Click to hide mouse focus into the game (For FullScreen Game)
-            Thread.Sleep(50);
-            isim.Mouse.LeftButtonDown();
-            Thread.Sleep(50);
-            isim.Mouse.LeftButtonUp();
+            Autoclick.leftClick(true, isim);
 
             // Thread Delay for 1 second
             Thread.Sleep(1000);
@@ -153,10 +150,6 @@ namespace AutomateGame
             // Thread function for Listening Keyboard Input
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
-
-            // Thread function for Run and Lockon
-            Thread runAndLockOnThread = new Thread(() => GlanblueAutoaction.runAndLockOn(isim, ref active));
-            runAndLockOnThread.Start();
 
 
 
@@ -185,13 +178,14 @@ namespace AutomateGame
                     string bypasssText = CapturedScreenToTextRecognition.capturedToText(new Point(746, 442), new Point(1234, 583)); // 1920 x 1080
 
                     // Bypasses (Do you want continue this quest?)
-                    if(bypasssText.Contains(bypassContinueQuest)) 
+                    if (bypasssText.Contains(bypassContinueQuest))
                     {
                         Console.WriteLine("Bypasses Continue Quest");
 
                         Autokey.pressKey(active, isim, VirtualKeyCode.UP);
-                        Autoclick.leftClick(active, isim);
-                    }else
+                        Autoclick.leftClick(active, isim, 1000);
+                    }
+                    else
 
                     if (capturedText.Contains(repeatQuest)) // Show RepeatQuest Button State
                     {
@@ -199,14 +193,14 @@ namespace AutomateGame
 
                         // auto repeat quest at first time
                         Autokey.pressKey(active, isim, VirtualKeyCode.VK_3);
-                        Autoclick.leftClick(active, isim); 
+                        Autoclick.leftClick(active, isim, 1000);
 
                     }
-                    else if(capturedText.Contains(cancelRepeat)) // Show CancelRepeat Button State
+                    else if (capturedText.Contains(cancelRepeat)) // Show CancelRepeat Button State
                     {
                         Console.WriteLine("ShowCancelRepeatState");
                         Autoclick.leftClick(active, isim);
-                        Autoclick.leftClick(active, isim);
+                        Autoclick.leftClick(active, isim, 1000);
 
                     }
                     else  // No Button State

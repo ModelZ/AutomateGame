@@ -73,7 +73,7 @@ namespace AutomateGame.automation.lib
                 Console.WriteLine("Bypasses Continue Quest");
 
                 Autokey.pressKey(active, isim, VirtualKeyCode.UP);
-                Autoclick.leftClick(active, isim);
+                Autoclick.leftClick(active, isim, 1000);
             }
             else
 
@@ -83,14 +83,14 @@ namespace AutomateGame.automation.lib
 
                 // auto repeat quest at first time
                 Autokey.pressKey(active, isim, VirtualKeyCode.VK_3);
-                Autoclick.leftClick(active, isim);
+                Autoclick.leftClick(active, isim, 1000);
 
             }
             else if (capturedText.Contains(cancelRepeat)) // Show CancelRepeat Button State
             {
                 Console.WriteLine("ShowCancelRepeatState");
                 Autoclick.leftClick(active, isim);
-                Autoclick.leftClick(active, isim);
+                Autoclick.leftClick(active, isim, 1000);
 
             }
             else  // No Button State
