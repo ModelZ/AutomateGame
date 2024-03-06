@@ -62,53 +62,9 @@ namespace AutomateGame
 
         }
 
-        static void runAndLockOn(InputSimulator isim, ref bool active, ref bool isKeyDown)
-        {
+        
 
-
-            // If toggle key is on and not keydown
-            if (active && !isKeyDown)
-            {
-
-                Console.WriteLine("Holding Key");
-                isKeyDown = true;
-                isim.Keyboard.KeyDown(VirtualKeyCode.VK_W);
-                isim.Keyboard.KeyDown(VirtualKeyCode.VK_E);
-            }
-
-            // If toggle key is on and keydown
-            if (!active && isKeyDown)
-            {
-
-                Console.WriteLine("Release Key");
-                isKeyDown = false;
-                isim.Keyboard.KeyUp(VirtualKeyCode.VK_W);
-                isim.Keyboard.KeyUp(VirtualKeyCode.VK_E);
-
-                // ***ALWAYS*** Release key when Thread terminate this program
-            }
-        }
-
-        /*static void battleResultleftClicker(InputSimulator isim, ref bool active)
-        {
-            Console.WriteLine("battleResultleftClicker Thread Active....");
-
-            while (true)
-            {
-                if (active)
-                {
-                    // Left click every 2 second
-                    Thread.Sleep(2000);
-
-                    Console.WriteLine("battleResultleftClicker Clicked");
-                    isim.Mouse.LeftButtonDown();
-                    Thread.Sleep(50);
-                    isim.Mouse.LeftButtonUp();
-                }
-            }
-        }*/
-
-        static void Main(string[] args)
+        static void Mains(string[] args)
         {
             Console.WriteLine("Welcome to Granblue Fantasy Relink Bypass 10 times Reset Repeat Quest");
             Console.WriteLine("Press X to toggle on/off, Press Z to terminate the program");
@@ -151,12 +107,11 @@ namespace AutomateGame
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
-
-
             // check string
             string cancelRepeat = "Cancel";
             string repeatQuest = "Quest";
             string bypassContinueQuest = "Continue";
+            string questFreeze = "reviewing";
 
             while (true)
             {
@@ -165,9 +120,9 @@ namespace AutomateGame
                 if (active)
                 {
 
-                    // Capture Screen to Mat every 4 seconds
+                    // Capture Screen to Mat every 3 seconds
 
-                    Thread.Sleep(4000);
+                    Thread.Sleep(3000);
 
                     // Playsound when capturing
                     Playsound.Mains();
@@ -183,6 +138,14 @@ namespace AutomateGame
                         Console.WriteLine("Bypasses Continue Quest");
 
                         Autokey.pressKey(active, isim, VirtualKeyCode.UP);
+                        Autoclick.leftClick(active, isim, 1000);
+                    }
+                    else
+                    // Prevent Quest Freeze to the confirmation (Are you done reviewing .....)
+                    if (bypasssText.Contains(questFreeze))
+                    {
+                        Console.WriteLine("Preventing Quest Freeze");
+
                         Autoclick.leftClick(active, isim, 1000);
                     }
                     else
