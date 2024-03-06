@@ -146,6 +146,31 @@ namespace AutomateGame.automation.lib
         }
 
 
+        public static void evaluationBypass(InputSimulator isim, ref bool active)
+        {
+            Console.WriteLine("Evaluation Thread Active...");
+            while (true)
+            {
+                if (!active) continue;
+                // Condition check every 1 second
+                Thread.Sleep(1000);
+
+                // Capture Screen to Text
+                string evaluateText = CapturedScreenToTextRecognition.capturedToText(new Point(318, 371), new Point(686, 527)); // 1920 x 1080
+                // Text to check condition
+                string evaluation = "Eva";
+
+                if (evaluateText.Contains(evaluation))
+                {
+                    Console.WriteLine("Evaluation Bypass");
+
+                    Autoclick.leftClick(active, isim);
+                }
+            }
+
+        }
+
+
 
 
     }

@@ -80,7 +80,7 @@ namespace AutomateGame.automation
         }
 
 
-        static void Main(string[] args)
+        static void Mains(string[] args)
         {
             // Get the array of process run by this name
             Process[] ps = Process.GetProcessesByName("javaw");

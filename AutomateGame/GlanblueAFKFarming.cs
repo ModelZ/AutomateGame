@@ -64,7 +64,7 @@ namespace AutomateGame
 
         
 
-        static void Mains(string[] args)
+        static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Granblue Fantasy Relink Bypass 10 times Reset Repeat Quest");
             Console.WriteLine("Press X to toggle on/off, Press Z to terminate the program");
@@ -107,11 +107,16 @@ namespace AutomateGame
             Thread listener = new Thread(() => keyListener(isim, ref active, VirtualKeyCode.VK_X, VirtualKeyCode.VK_Z));
             listener.Start();
 
+            // Thread function for evaluation interface bypass
+            Thread evaluationThread = new Thread(() => GlanblueAutoaction.evaluationBypass(isim, ref active));
+            evaluationThread.Start();
+
             // check string
             string cancelRepeat = "Cancel";
             string repeatQuest = "Quest";
             string bypassContinueQuest = "Continue";
             string questFreeze = "reviewing";
+  
 
             while (true)
             {
@@ -132,12 +137,13 @@ namespace AutomateGame
 
                     string bypasssText = CapturedScreenToTextRecognition.capturedToText(new Point(746, 442), new Point(1234, 583)); // 1920 x 1080
 
+
                     // Bypasses (Do you want continue this quest?)
                     if (bypasssText.Contains(bypassContinueQuest))
                     {
                         Console.WriteLine("Bypasses Continue Quest");
 
-                        Autokey.pressKey(active, isim, VirtualKeyCode.UP);
+                        Autokey.pressKey(active, isim, VirtualKeyCode.UP, 1000);
                         Autoclick.leftClick(active, isim, 1000);
                     }
                     else
